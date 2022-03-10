@@ -7,28 +7,84 @@
     <title>Tic-Tac-Toe</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="starting-screen">
-      <p>Tic Tac Toe</p>
-      <button>Start Game</button>
-      <button class="pvp-button">
-        <h1>PVP</h1>
-        <p>player vs player</p>
-      </button>
-      <button class="pve-button">
-        <h1>PVE</h1>
-        <p>player vs enemy-ai</p>
-      </button>
+      <p class="logo active">Tic-Tac-Toe</p>
+      <div class="button-container">
+        <button class="pvp-button">
+          <h1>PVP</h1>
+          <p>player vs player</p>
+        </button>
+        <button class="pve-button">
+          <h1>PVE</h1>
+          <p>player vs enemy-ai</p>
+        </button>
+      </div>
     </div>
     <div class="pvp-modal">
-      <form action="#" method="#">
-        <label for="player-one">Player 1</label>
-        <input type="text" name="player-one" id="player-one" />
-        <label for="player-two">Player 2</label>
-        <input type="text" name="player-two" id="player-two" />
-        <button type="submit">Begin Games</button>
+      <form class="pvp-form" action="#" method="#">
+        <div class="question one">
+          <label for="player-one">Player 1</label>
+          <input
+            type="text"
+            name="player-one"
+            id="player-one"
+            placeholder="name -- X --"
+            required
+          />
+        </div>
+        <div class="question two">
+          <label for="player-two">Player 2</label>
+          <input
+            type="text"
+            name="player-two"
+            id="player-two"
+            placeholder="name -- O --"
+            required
+          />
+        </div>
+        <button type="button" class="pvp-begin-btn">Begin Games</button>
       </form>
     </div>
+    <div class="pve-modal">
+      <form action="#" method="#">
+        <div class="question">
+          <label for="player-one">Challenger</label>
+          <input
+            type="text"
+            name="player-one"
+            id="player-one"
+            placeholder="name -- X --"
+            required
+          />
+        </div>
+        <button type="submit" class="pve-begin-btn">Begin Games</button>
+      </form>
+    </div>
+    <div class="game-screen">
+      <p class="turn-declare">player 1's turn</p>
+      <div class="game-grid">
+        <div class="tile one">1</div>
+        <div class="tile two">2</div>
+        <div class="tile three">3</div>
+        <div class="tile four">4</div>
+        <div class="tile five">5</div>
+        <div class="tile six">6</div>
+        <div class="tile seven">7</div>
+        <div class="tile eight">8</div>
+        <div class="tile nine">9</div>
+      </div>
+    </div>
+    <!-- <div class="game-over-screen">
+      <p>Congratulatioins Player 1 Won!</p>
+      <button class="start-game-btn">New Game</button>
+    </div> -->
   </body>
 </html>
