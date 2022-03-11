@@ -37,7 +37,7 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  /* transition: 200ms ease-in-out; */
+  transition: 200ms ease-in-out;
   transform: translate(-52%, 0%) scale(1);
 }
 
@@ -55,14 +55,13 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 200%);
-  /* transition: 200ms ease-in-out; */
-  opacity: 0;
+  transform: translate(-50%, 100%) scale(0);
+  transition: 200ms ease-in-out;
   pointer-events: none;
 }
 
 .button-container.active {
-  opacity: 1;
+  transform: translate(-50%, 200%) scale(1);
   pointer-events: all;
 }
 
@@ -107,7 +106,7 @@ button {
   border-radius: 10px;
   padding: 0.5em;
   box-shadow: 0 3px 10px #ccc;
-  /* transition: 200ms ease-in-out; */
+  transition: 200ms ease-in-out;
   opacity: 0;
   pointer-events: none;
 }
@@ -172,7 +171,7 @@ button {
   border-radius: 10px;
   padding: 0.5em;
   box-shadow: 0 3px 10px #ccc;
-  /* transition: 200ms ease-in-out; */
+  transition: 200ms ease-in-out;
   opacity: 0;
   pointer-events: none;
 }

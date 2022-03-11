@@ -1,3 +1,42 @@
+//STARTING SCREEN TRANSITION
+const pvpBtn = document.querySelector('.pvp-button')
+const pveBtn = document.querySelector('.pve-button')
+const logo = document.querySelector('.logo')
+const pvpModal = document.querySelector('.pvp-modal')
+const pveModal = document.querySelector('.pve-modal')
+const buttonContainer = document.querySelector('.button-container')
+
+pvpBtn.addEventListener('click', () => {
+    startScreenTransition()
+    pvpModal.classList.toggle('active')
+})
+
+pveBtn.addEventListener('click', () => {
+    startScreenTransition()
+    pveModal.classList.toggle('active')
+})
+
+function startScreenTransition() {
+    logo.classList.toggle('active')
+    buttonContainer.classList.toggle('active')
+}
+
+// PVP FORM
+const pvpModalInputs = [...pvpModal.querySelectorAll('input')];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
