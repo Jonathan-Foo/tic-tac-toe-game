@@ -37,11 +37,13 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  /* transition: 200ms ease-in-out; */
+  transition: 200ms ease-in-out;
   transform: translate(-52%, 0%) scale(1);
 }
 
 .logo.active {
+  /* transition: 200ms ease-in-out; */
+  opacity: 1;
   transform: translate(-52%, -95%) scale(0.6);
 }
 
@@ -53,14 +55,13 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, 200%);
-  /* transition: 200ms ease-in-out; */
-  opacity: 0;
+  transform: translate(-50%, 100%) scale(0);
+  transition: 200ms ease-in-out;
   pointer-events: none;
 }
 
 .button-container.active {
-  opacity: 1;
+  transform: translate(-50%, 200%) scale(1);
   pointer-events: all;
 }
 
@@ -92,6 +93,11 @@ button {
 .pvp-button:hover > p {
   color: white;
 }
+.pve-button:disabled > p,
+.pve-button:disabled {
+  color: #777;
+  background-color: #ccc;
+}
 
 /* PVP MODAL/FORM */
 .pvp-modal {
@@ -105,7 +111,7 @@ button {
   border-radius: 10px;
   padding: 0.5em;
   box-shadow: 0 3px 10px #ccc;
-  /* transition: 200ms ease-in-out; */
+  transition: 200ms ease-in-out;
   opacity: 0;
   pointer-events: none;
 }
@@ -170,7 +176,7 @@ button {
   border-radius: 10px;
   padding: 0.5em;
   box-shadow: 0 3px 10px #ccc;
-  /* transition: 200ms ease-in-out; */
+  transition: 200ms ease-in-out;
   opacity: 0;
   pointer-events: none;
 }
@@ -204,8 +210,17 @@ button {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -10%);
+  transition: 200ms ease-in-out;
+  transform: translate(-50%, -10%) scale(0);
+  opacity: 0;
+  pointer-events: none;
   font-size: 100px;
+}
+
+.game-screen.active {
+  transform: translate(-50%, -10%) scale(1);
+  opacity: 1;
+  pointer-events: all;
 }
 
 .turn-declare {
@@ -213,6 +228,12 @@ button {
   margin-bottom: 0.1em;
   color: #ef4444;
   text-shadow: 3px 0px #7f1d1d;
+  transition: 200ms ease-in-out;
+  opacity: 0;
+}
+
+.turn-declare.active {
+  opacity: 1;
 }
 
 .game-grid {
@@ -226,14 +247,75 @@ button {
 }
 
 .tile {
+  font-family: "Varela Round";
   border: 3px solid var(--warm-yellow);
-  padding: 0.25em 0.7em;
+  height: 180px;
+  width: 180px;
+  font-size: 1.6em;
   color: var(--main-font-color);
   text-shadow: 5px 0px #0476d0;
+  cursor: pointer;
+  text-align: 100px 100px;
 }
 
 .tile:hover {
   background: #ef4444;
   box-shadow: inset 0 0 10px #7f1d1d;
   border-radius: 10px;
+}
+
+/* END GAME SCREEN */
+.logo.disappear {
+  transform: translate(-52%, -95%) scale(0);
+  opacity: 0;
+}
+
+.game-over-screen {
+  position: absolute;
+  width: 100vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -109%);
+  display: flex;
+  flex-direction: column;
+  transition: 200ms ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.game-over-screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.congratulations {
+  font-size: 8em;
+  color: var(--main-font-color);
+  text-shadow: 6px 0px #0476d0;
+  margin-bottom: -0.15em;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 3em;
+  margin-left: -0.3em;
+}
+
+.restart-btn,
+.start-game-btn {
+  padding: 0.5em 1em;
+  font-size: 1.2em;
+  color: var(--dark-blue);
+  background-color: var(--main-font-color);
+  border: none;
+  box-shadow: 5px 0 0 0 var(--blue-grotto);
+  border-radius: 6px;
+}
+
+.restart-btn:hover,
+.start-game-btn:hover {
+  background-color: var(--tiffany-blue);
+  color: var(--main-font-color);
+  box-shadow: none;
 }
