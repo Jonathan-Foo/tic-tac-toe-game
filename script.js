@@ -31,9 +31,13 @@ beginGameBtn.addEventListener('click', () => beginPvPGame())
 
 const pvpForm = document.querySelector('.pvp-form')
 const pvpFormInputs = [...pvpForm.querySelectorAll('input')];
+const turnDeclarer = document.querySelector('.turn-declare') 
 let playerOne = {}
 let playerTwo = {}
-
+let currentPlayer = {}
+let nextPlayer = {}
+const playerOneCreator = (name) => {playerOne = {name: name, playerNumber: 'one', symbol: 'X'}}
+const playerTwoCreator = (name) => {playerTwo = {name: name, playerNumber: 'two', symbol: 'O'}}
 
 function beginPvPGame() {
     if (pvpFormInputs.every(input => input.validity.valid !== false)) {
@@ -41,15 +45,17 @@ function beginPvPGame() {
         gameScreen.classList.toggle('active')
         playerOneCreator(pvpFormInputs[0].value)
         playerTwoCreator(pvpFormInputs[1].value)
+        turnDeclarer.innerHTML = `${playerOne.name}'s turn`
+        currentPlayer = playerOne
+        nextPlayer = playerTwo
+        
     } else {
         pvpForm.reportValidity()
         return 
     }
 }
 
-const playerOneCreator = (name) => {playerOne = {name: name, playerNumber: 'one', symbol: 'X'}}
 
-const playerTwoCreator = (name) => {playerTwo = {name: name, playerNumber: 'two', symbol: 'O'}}
 
 
 //PVE FORM 
@@ -65,18 +71,45 @@ function beginPvEGame() {
         pvpModal.classList.toggle('active')
         gameScreen.classList.toggle('active')
         playerOneCreator(pvpFormInputs[0].value)
+        
     } else {
         pveForm.reportValidity()
         return 
     }
+}
+
+
+
+
+
+// GAMESCREEN    
+const gameOverScreen =  document.querySelector('.game-over-screen')
+const congratulations = document.querySelector('.congratulations')
+
+function gameOverTransition() {
+    gameOverScreen.classList.toggle('active')
+    logo.classList.toggle('disappear')
+    turnDeclarer.classList.toggle('active')
+    gameScreen.style.pointerEvents = 'none'
+}
+
+function declareWinner() {
+    congratulations.innerHTML = `Congratulations ${nextPlayer.name} Won!`
+    gameOverTransition()
+}
+
+function checkForTie() {
+    let fullHouse = gameBoard.every(array => array[0] !== '' && array[1] !== '' && array[2] !== '')
+    if (fullHouse && checkWinner() === false) {
+        congratulations.innerHTML = `It's A Tie Game!`
+        gameOverTransition()
+    } else {
+        return
     }
-
-
-
-
+}
 
 // CHECKING FOR WINS 
-const gameBoard = [['','', ''],
+let gameBoard = [['','', ''],
                 [ '', '', ''], 
                 ['', '', '']] 
 
@@ -86,7 +119,10 @@ function checkWinner() {
         verticalWinCheck() 
         horizontalWinCheck()
         diagonalWinCheck()
+        return false 
+    
 }
+
 
 function verticalWinCheck() {
     let leftColumnWin = gameBoard[0][0] !== '' && gameBoard.every(array => array[0] == gameBoard[0][0]) 
@@ -94,20 +130,20 @@ function verticalWinCheck() {
     let rightColumnWin = gameBoard[0][2] !== '' && gameBoard.every(array => array[2] == gameBoard[0][2])
     
     if (leftColumnWin || midColumnWin || rightColumnWin) {
-        console.log('vertical win')
+        declareWinner()
     } else {
-        return 
+        return false 
     }
 } 
 
 function horizontalWinCheck() {
     let topRowWin = gameBoard[0][0] !== '' && gameBoard[0][0] == gameBoard[0][1] && gameBoard[0][1] == gameBoard[0][2]
-    let midRowWin = gameBoard[0][0] !== '' && gameBoard[0][0] == gameBoard[0][1] && gameBoard[0][1] == gameBoard[0][2]
-    let bottomRowWin = gameBoard[0][0] !== '' && gameBoard[0][0] == gameBoard[0][1] && gameBoard[0][1] == gameBoard[0][2]
+    let midRowWin = gameBoard[1][0] !== '' && gameBoard[1][0] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[1][2]
+    let bottomRowWin = gameBoard[2][0] !== '' && gameBoard[2][0] == gameBoard[2][1] && gameBoard[2][1] == gameBoard[2][2]
     if (topRowWin || midRowWin || bottomRowWin) {
-        console.log("horizontal win")
+        declareWinner()
     } else {
-        return 
+        return false
     }
 }
 
@@ -115,27 +151,45 @@ function diagonalWinCheck() {
     let diagonalOne = gameBoard[0][0] !== '' && gameBoard[0][0] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[2][2] 
     let diagonalTwo = gameBoard[0][2] !== '' && gameBoard[0][2] == gameBoard[1][1] && gameBoard[1][1] == gameBoard[2][0] 
     if (diagonalOne || diagonalTwo) {
-        console.log('diagonal win')
+        declareWinner()
     } else {
-        return
+        return false 
     }
 }
 
-
-
-// CLICKING ON TITLE TRIGGER A SYMBOL TO BE DISPLAYED 
+//player screen
 let currentSymbol = 'X'
 const tiles = [...document.querySelectorAll('.tile')]
-// let turns = 0
-// CONNECT CLICK TO GAMEBOARD ARRAY
+
+function switchSymbol(symbol) {
+     symbol == 'X' ? currentSymbol = 'O' : currentSymbol = 'X'
+}
+
+function switchCurrentPlayer(player) {
+    if (player == playerOne) {
+        currentPlayer = playerTwo
+        nextPlayer = playerOne
+    } else {
+        currentPlayer = playerOne
+        nextPlayer = playerTwo
+    }
+}
+
+function switchTurnDeclareName(player) {
+    return turnDeclarer.innerHTML = `${player.name}'s turn`
+}
+
+// CLICK EVENT TRIGGERS
 tiles.forEach(tile => tile.addEventListener('click', () => {
     const indexA = tile.dataset.indexa
     const indexB = tile.dataset.indexb
     if (gameBoard[indexA][indexB] == '') {
         tile.innerHTML = currentSymbol
         gameBoard[indexA][indexB] = tile.innerHTML
+        switchCurrentPlayer(currentPlayer)
+        switchTurnDeclareName(currentPlayer) 
         switchSymbol(currentSymbol)
-       
+        checkForTie()
         checkWinner()
     } else {
         return
@@ -143,10 +197,42 @@ tiles.forEach(tile => tile.addEventListener('click', () => {
 
 }))
 
+// GAME OVER 
+const newGame = document.querySelector('.start-game-btn')
+const restartBtn = document.querySelector('.restart-btn')
+
+newGame.addEventListener('click', () => {
+    logo.classList.toggle('disappear')
+    startScreenTransition()
+    gameScreen.classList.toggle('active')
+    gameOverScreen.classList.toggle('active')
+    turnDeclarer.classList.toggle('active')
+    pvpFormInputs.forEach(input => input.value = '') 
+    gameScreen.style.pointerEvents = 'all'
+    clearData()
+})
+
+restartBtn.addEventListener('click', () => {
+    logo.classList.toggle('disappear')
+    gameOverScreen.classList.toggle('active')
+    turnDeclarer.classList.toggle('active')
+    gameScreen.style.pointerEvents = 'all'
+    gameBoard = [['','', ''],[ '', '', ''], ['', '', '']]
+    tiles.forEach(tile => tile.innerHTML = '')
+    currentPlayer = playerOne
+    nextPlayer = playerTwo
+    currentSymbol = 'X'
+    turnDeclarer.innerHTML = `${playerOne.name}'s turn`
+
+})
 
 
-function switchSymbol(symbol) {
-     return symbol == 'X' ? currentSymbol = 'O' : currentSymbol = 'X'
+function clearData() {
+    gameBoard = [['','', ''],[ '', '', ''], ['', '', '']]
+    tiles.forEach(tile => tile.innerHTML = '')
+    playerOne = {}
+    playerTwo = {}
+    currentPlayer = {}
+    nextPlayer = {}
+    currentSymbol = 'X'
 }
-
-

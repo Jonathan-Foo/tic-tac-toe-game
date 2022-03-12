@@ -93,6 +93,11 @@ button {
 .pvp-button:hover > p {
   color: white;
 }
+.pve-button:disabled > p,
+.pve-button:disabled {
+  color: #777;
+  background-color: #ccc;
+}
 
 /* PVP MODAL/FORM */
 .pvp-modal {
@@ -273,7 +278,7 @@ button {
   transform: translate(-50%, -109%);
   display: flex;
   flex-direction: column;
-  /* transition: 200ms ease-in-out; */
+  transition: 200ms ease-in-out;
   opacity: 0;
   pointer-events: none;
 }
